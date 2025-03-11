@@ -21,11 +21,11 @@ glog.error("message") // Prints to console.error
 
 ## How to use
 
-### Add the package to your project
+### Add package to your project
 
     npm install --save-dev @glitchybyte/babel-plugin-glog
 
-### Add the plugin to `babel.config.js`
+### Add plugin to `babel.config.js`
 
 ```js
 {
