@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+# Copyright 2023-2025 GlitchyByte
+# SPDX-License-Identifier: MIT
+
+# Manage project.
+
+# [Setup]
+set -u # Exit with an error if a variable is used without being set.
+set -e # Exit if any command returns an error.
+# Capture caller directory and script directory.
+readonly calling_dir="${PWD}"
+readonly script_dir="$(cd "$(dirname "$0")" && pwd)"
+# Go to script directory and load utilities.
+cd "${script_dir}"
+
+# [Functions]
+print_usage() {
+  echo "Usage: $0 <setup|build|copy>"
+  echo "    setup - Sets up project."
+  echo "    build - Builds project."
+  echo "    copy <dest> - Makes a clean copy of the project into dest."
+}
+
+setup_project() {
+  # Remove node_modules.
+  if [ -d "node_modules" ]; then
+    rm -dr node_modules
+  fi
+  # Remove package-lock.json.
+  if [ -f "package-lock.json" ]; then
+    rm package-lock.json
+  fi
+  # Install.
+  npm install
+  return 0
+}
+
+build_project() {
+  # Remove dist.
+  if [ -d "dist" ]; then
+    rm -dr dist
+  fi
+  # Build.
+  npm run build
+  return 0
+}
+
+copy_project() {
+  if [ $# -eq 0 ]; then
+    print_usage
+    return 1
+  fi
+  # Get package destination directory.
+  dest="$1"
+  package_name=$(jq -r ".name" package.json)
+  package_dir="${dest}/${package_name}"
+  # Create directory.
+  mkdir -p "${package_dir}"
+  # Copy files to package destination directory.
+  paths=$(jq -r ".files[]" package.json)
+  while read -r path; do
+    cp -r "${path}" "${package_dir}/"
+  done <<< "${paths}"
+  cp package.json "${package_dir}/"
+  return 0
+}
+
+# [Router]
+# Capture command.
+if [ $# -eq 0 ]; then
+  command="exit"
+else
+  command="$1"
+  shift
+fi
+
+# Remove macOS cruft.
+find . -name ".DS_Store" -type f -delete
+
+# Route command.
+case "${command}" in
+  "setup")
+    setup_project
+    code=$?
+    ;;
+  "build")
+    build_project
+    code=$?
+    ;;
+  "copy")
+    copy_project "$@"
+    code=$?
+    ;;
+  *)
+    print_usage
+    code=1
+    ;;
+esac
+
+# [Teardown]
+cd "${calling_dir}"
+exit $code
