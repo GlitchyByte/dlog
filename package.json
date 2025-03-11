@@ -15,22 +15,28 @@
     "type": "git",
     "url": "https://github.com/GlitchyByte/babel-plugin-glog"
   },
-  "main": "./dist/plugin.js",
-  "types": "./dist/glod.d.ts",
   "files": [
-    "./dist"
+    "dist",
+    "src/plugin"
   ],
+  "main": "./src/plugin/plugin.js",
   "exports": {
-    ".": "./dist/plugin.js",
+    ".": "./src/plugin/plugin.js",
     "./glog": {
-      "import": "./dist/glog.js",
-      "types": "./dist/glog.d.ts"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "glog": [
+        "./dist/index.d.ts"
+      ]
     }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "devDependencies": {
     "typescript": "^5.8.2"

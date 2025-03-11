@@ -21,12 +21,26 @@ function _error(sourceLine: string, message: any) {
 }
 
 interface GLog {
+  /**
+   * `console.log` with source line information prepended to the message.
+   *
+   * @param message Message to print.
+   */
   log(message: any): void
   log(sourceLine: string | null, message: any): void
+
+  /**
+   * `console.error` with source line information prepended to the message.
+   *
+   * @param message Message to print.
+   */
   error(message: any): void
   error(sourceLine: string | null, message: any): void
 }
 
+/**
+ * `console` logger replacement.
+ */
 export const glog: GLog = {
   log(sourceLine: string | null, message?: any): void {
     const [s, m] = normalizeParams(sourceLine, message)
