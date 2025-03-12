@@ -57,6 +57,11 @@ copy_project() {
   fi
   # Get destination package directory.
   dest="$1"
+  # Verify dest exists.
+  if [ ! -d "${dest}" ]; then
+    echo "Destination does not exist: ${dest}"
+    return 1
+  fi
   package_name=$(jq -r '.name' package.json)
   dest_package_dir="${dest}/${package_name}"
   # Create directory.
