@@ -1,6 +1,6 @@
 # GLog (Babel plugin)
 
-![Version](https://img.shields.io/badge/Version-0.1.0-blue)
+![Version](https://img.shields.io/badge/Version-0.2.0-blue)
 
 Babel plugin that enhances glog (an included console logger replacement) 
 by automatically injecting source filenames (relative to project root) 
