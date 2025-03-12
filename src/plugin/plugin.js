@@ -3,7 +3,7 @@
 
 module.exports = function({ types: t }) {
   return {
-    name: "glog",
+    name: "babel-plugin-glog",
     visitor: {
       Program: {
         enter(path, state) {
