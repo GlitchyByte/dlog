@@ -37,8 +37,13 @@ setup_project() {
 
 build_project() {
   # Remove dist.
-  if [ -d "dist" ]; then
-    rm -dr dist
+  out_dir=$(sed -E -e 's|/\*.*\*/||' -e 's|//.*$||' tsconfig.json | jq -r '.compilerOptions.outDir')
+  if [[ "${out_dir}" == "null" ]]; then
+    echo "No outDir in tsconfig.json"
+    return 1
+  fi
+  if [ -d "${out_dir}" ]; then
+    rm -dr "${out_dir}"
   fi
   # Build.
   npm run build
@@ -50,18 +55,23 @@ copy_project() {
     print_usage
     return 1
   fi
-  # Get package destination directory.
+  # Get destination package directory.
   dest="$1"
-  package_name=$(jq -r ".name" package.json)
-  package_dir="${dest}/${package_name}"
+  package_name=$(jq -r '.name' package.json)
+  dest_package_dir="${dest}/${package_name}"
   # Create directory.
-  mkdir -p "${package_dir}"
-  # Copy files to package destination directory.
-  paths=$(jq -r ".files[]" package.json)
+  if [ -d "${dest_package_dir}" ]; then
+    rm -dr "${dest_package_dir}"
+  fi
+  mkdir -p "${dest_package_dir}"
+  # Copy files to destination package directory.
+  paths=$(jq -r '.files[]' package.json)
   while read -r path; do
-    cp -r "${path}" "${package_dir}/"
+    final_dest="${dest_package_dir}/${path}"
+    mkdir -p "${final_dest}"
+    cp -r "${path}/" "${final_dest}/"
   done <<< "${paths}"
-  cp package.json "${package_dir}/"
+  cp package.json "${dest_package_dir}/"
   return 0
 }
 
