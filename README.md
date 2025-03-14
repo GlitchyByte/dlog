@@ -25,7 +25,9 @@ dlog.error("message") // Prints to console.error
 
 ### Add package to your project
 
-    npm install --save-dev @glitchybyte/dlog
+```bash
+npm install --save-dev @glitchybyte/dlog
+```
 
 ### Add plugin to `babel.config.js`
 
