@@ -1,9 +1,13 @@
 // Copyright 2025 GlitchyByte
 // SPDX-License-Identifier: Apache-2.0
 
+const fs = require("fs")
+const p = require("path")
+
 module.exports = function({ types: t }) {
+  const void0Expression = t.unaryExpression("void", t.numericLiteral(0)) // void 0
   return {
-    name: "babel-plugin-glog",
+    name: "dlog",
     visitor: {
       Program: {
         enter(path, state) {
@@ -18,8 +22,6 @@ module.exports = function({ types: t }) {
             return
           }
           // Find project root by traversing backwards to the directory with package.json.
-          const fs = require("fs")
-          const p = require("path")
           let currentPath = filepath
           let rootPath = ""
           while (currentPath !== "/") {
@@ -30,29 +32,39 @@ module.exports = function({ types: t }) {
             currentPath = p.dirname(currentPath)
           }
           // Only record the relative path from project root.
-          state._sourcePath = "@" + filepath.slice(rootPath.length + 1)
+          state._sourcePath = "@" + filepath.substring(rootPath.length + 1)
+        }
+      },
+      ImportDeclaration(path, state) {
+        // Find `import { dlog } from "@glitchybyte/dlog"` and remove it completely.
+        if (!state._isProduction) {
+          return
+        }
+        const source = path.node.source
+        if (!source || !t.isStringLiteral(source)) {
+          return
+        }
+        if (source.value === "@glitchybyte/dlog") {
+          // Remove the whole import declaration.
+          path.remove()
         }
       },
       CallExpression(path, state) {
-        // Find glog.log("message") and transform it to something like glog.log("@path/to/file:12", "message")
+        // Find `dlog.log("message")` and transform it to something like `dlog.log("@path/to/file:12", "message"`)
         if (!t.isMemberExpression(path.node.callee)) {
           return
         }
         const object = path.node.callee.object
         const property = path.node.callee.property
         if (
-          !t.isIdentifier(object, { name: "glog" }) ||
+          !t.isIdentifier(object, { name: "dlog" }) ||
           !(t.isIdentifier(property, { name: "log" }) || t.isIdentifier(property, { name: "error" }))
         ) {
           return
         }
         if (state._isProduction) {
-          // In production, remove the whole statement.
-          let currentPath = path
-          while (currentPath.type !== "ExpressionStatement") {
-            currentPath = currentPath.parentPath
-          }
-          currentPath.remove()
+          // In production, we replace it with `void 0`.
+          path.replaceWith(void0Expression)
           return
         }
         // Add source line argument to the glog call.
