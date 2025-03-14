@@ -72,9 +72,22 @@ copy_project() {
   # Copy files to destination package directory.
   paths=$(jq -r '.files[]' package.json)
   while read -r path; do
-    final_dest="${dest_package_dir}/${path}"
-    mkdir -p "${final_dest}"
-    cp -r "${path}/" "${final_dest}/"
+    clean_path="${path#./}"
+    if [ -d "${clean_path}" ]; then
+      dest_dir="${dest_package_dir}/${clean_path}"
+      mkdir -p "${dest_dir}"
+      cp -r "${clean_path}/" "${dest_dir}/"
+    else
+      src_dir="$(dirname "${clean_path}")"
+      if [[ "${src_dir}" == '.' ]]; then
+        src_dir=""
+      fi
+      src_file="$(basename "${clean_path}")"
+      dest_dir="${dest_package_dir}/${src_dir}"
+      dest_dir="${dest_dir%/}"
+      mkdir -p "${dest_dir}"
+      cp "${clean_path}" "${dest_dir}/${src_file}"
+    fi
   done <<< "${paths}"
   cp package.json "${dest_package_dir}/"
   return 0
