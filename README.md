@@ -1,10 +1,12 @@
-# GLog (Babel plugin)
+# dlog
 
-![Version](https://img.shields.io/badge/Version-0.2.0-blue)
+![version](https://img.shields.io/badge/version-1.0.0-dodgerblue)
 
-Babel plugin that enhances glog (an included console logger replacement) 
-by automatically injecting source filenames (relative to project root) 
-and line numbers into log statements. Silently removes all logging in 
+## Dev console logger library and Babel plugin
+
+Console logging library and Babel plugin that enhances logs by 
+automatically injecting source filenames (relative to project root) 
+and line numbers into log statements. Removes all logging in 
 production environments.
 
 #### Goals
@@ -15,15 +17,15 @@ production environments.
 ## API
 
 ```ts
-glog.log("message")   // Prints to console.log
-glog.error("message") // Prints to console.error
+dlog.log("message")   // Prints to console.log
+dlog.error("message") // Prints to console.error
 ```
 
 ## How to use
 
 ### Add package to your project
 
-    npm install --save-dev @glitchybyte/babel-plugin-glog
+    npm install --save-dev @glitchybyte/dlog
 
 ### Add plugin to `babel.config.js`
 
@@ -32,7 +34,7 @@ glog.error("message") // Prints to console.error
   presets: [...],
   plugins: [
     ...,
-    "@glitchybyte/babel-plugin-glog"
+    "@glitchybyte/dlog/plugin"
   ]
 }
 ```
@@ -41,8 +43,8 @@ glog.error("message") // Prints to console.error
 
 ```ts
 // path/to/my-code.ts
-import { glog } from "@glitchybyte/babel-plugin-glog/glog"
+import { dlog } from "@glitchybyte/dlog"
 
-glog.log("Some message!")
+dlog.log("Some message!")
 // @path/to/my-code.ts:4 Some message!
 ```
