@@ -20,7 +20,7 @@ function _error(sourceLine: string, message: any) {
   console.error(`${sourceLine} ${message}`)
 }
 
-interface GLog {
+interface DevLog {
   /**
    * `console.log` with source line information prepended to the message.
    *
@@ -41,7 +41,7 @@ interface GLog {
 /**
  * `console` logger replacement.
  */
-export const glog: GLog = {
+export const dlog: DevLog = {
   log(sourceLine: string | null, message?: any): void {
     const [s, m] = normalizeParams(sourceLine, message)
     _log(s, m)

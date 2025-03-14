@@ -1,6 +1,6 @@
 // Copyright 2025 GlitchyByte
 // SPDX-License-Identifier: Apache-2.0
 
-import { glog } from "./glog"
+import { dlog } from "./dlog"
 
-export { glog }
+export { dlog }

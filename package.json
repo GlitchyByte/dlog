@@ -1,38 +1,30 @@
 {
-  "name": "@glitchybyte/babel-plugin-glog",
-  "version": "0.2.0",
+  "name": "@glitchybyte/dlog",
+  "version": "1.0.0",
   "author": "GlitchyByte",
   "license": "Apache-2.0",
-  "description": "Babel plugin for enhancing glog (a console logger replacement) with source filenames and line numbers while removing all logs in production.",
+  "description": "Console logging and Babel plugin for enhancing logs with source filenames and line numbers while removing all logs in production.",
   "keywords": [
     "babel-plugin",
     "console",
+    "dev",
     "log",
     "source",
     "line"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/GlitchyByte/babel-plugin-glog"
+    "url": "https://github.com/GlitchyByte/dlog"
   },
-  "files": [
-    "glog",
-    "src/plugin"
-  ],
-  "main": "./src/plugin/plugin.js",
+  "files": ["dist", "src/plugin"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/plugin/plugin.js",
-    "./glog": {
-      "import": "./glog/index.js",
-      "types": "./glog/index.d.ts"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "glog": [
-        "./glog/index.d.ts"
-      ]
-    }
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./plugin": "./src/plugin/plugin.js"
   },
   "sideEffects": false,
   "scripts": {
