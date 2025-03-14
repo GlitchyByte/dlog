@@ -14,9 +14,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/GlitchyByte/dlog"
+    "url": "git+https://github.com/GlitchyByte/dlog.git"
   },
-  "files": ["dist", "src/plugin"],
+  "files": [
+    "dist",
+    "src/plugin"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
