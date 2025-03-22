@@ -1,19 +1,19 @@
 // Copyright 2025 GlitchyByte
 // SPDX-License-Identifier: Apache-2.0
 
-const fs = require("fs")
+const fs = require("fs-extra")
 const p = require("path")
 
 module.exports = function({ types: t }) {
   const void0Expression = t.unaryExpression("void", t.numericLiteral(0)) // void 0
   return {
-    name: "dlog",
+    name: "dlog-babel-plugin",
     visitor: {
       Program: {
         enter(path, state) {
           state._isProduction = process.env.NODE_ENV === "production"
           if (state._isProduction) {
-            // In production, we exit fast as we are removing the whole statement.
+            // We are in production. We don't need to extract any information.
             return
           }
           const filepath = state.file?.opts?.filename
@@ -54,12 +54,9 @@ module.exports = function({ types: t }) {
         if (!t.isMemberExpression(path.node.callee)) {
           return
         }
+        // We are looking for `dlog.` calls.
         const object = path.node.callee.object
-        const property = path.node.callee.property
-        if (
-          !t.isIdentifier(object, { name: "dlog" }) ||
-          !(t.isIdentifier(property, { name: "log" }) || t.isIdentifier(property, { name: "error" }))
-        ) {
+        if (!t.isIdentifier(object, { name: "dlog" })) {
           return
         }
         if (state._isProduction) {
