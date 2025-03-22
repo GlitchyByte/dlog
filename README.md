@@ -1,10 +1,10 @@
 # dlog
 
-![version](https://img.shields.io/badge/version-1.0.0-dodgerblue)
+![version](https://img.shields.io/badge/version-2.0.0-dodgerblue)
 
-## Dev console logger library and Babel plugin
+## Dev console logger library (with Babel plugin, Vite compatible)
 
-Console logging library and Babel plugin that enhances logs by 
+Console logging library and Babel/Vite plugin that enhances logs by 
 automatically injecting source filenames (relative to project root) 
 and line numbers into log statements. Removes all logging in 
 production environments.
@@ -29,16 +29,36 @@ dlog.error("message") // Prints to console.error
 npm install --save-dev @glitchybyte/dlog
 ```
 
-### Add plugin to `babel.config.js`
+### In Babel (e.g., Expo and React Native development)
+
+Add plugin to `babel.config.js`
 
 ```js
 {
   presets: [...],
   plugins: [
     ...,
-    "@glitchybyte/dlog/plugin"
+    "@glitchybyte/dlog/babel"
   ]
 }
+```
+
+### In Vite (e.g., React development)
+
+Add plugin to `vite.config.ts`
+
+```ts
+import dlog from "@glitchybyte/dlog/babel"
+
+export default defineConfig({
+  plugins: [
+    react({
+      babel: {
+        plugins: [dlog]
+      }
+    })
+  ]
+})
 ```
 
 ### Use it in your code

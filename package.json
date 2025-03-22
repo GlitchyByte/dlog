@@ -1,11 +1,12 @@
 {
   "name": "@glitchybyte/dlog",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "GlitchyByte",
   "license": "Apache-2.0",
-  "description": "Console logging and Babel plugin for enhancing logs with source filenames and line numbers while removing all logs in production.",
+  "description": "Console logging for enhancing logs with source filenames and line numbers while removing all logs in production.",
   "keywords": [
     "babel-plugin",
+    "vite-plugin",
     "console",
     "dev",
     "log",
@@ -18,7 +19,7 @@
   },
   "files": [
     "dist",
-    "src/plugin"
+    "src/plugins"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,13 +28,23 @@
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./plugin": "./src/plugin/plugin.js"
+    "./babel": {
+      "default": "./src/plugins/babel-plugin.js",
+      "types": "./src/plugins/babel-plugin.d.ts"
+    }
   },
   "sideEffects": false,
   "scripts": {
     "build": "tsc"
   },
+  "peerDependencies": {
+    "@babel/core": "^7.26.10",
+    "vite": "^6.2.2"
+  },
   "devDependencies": {
-    "typescript": "^5.8.2"
+    "@babel/core": "^7.26.10",
+    "fs-extra": "^11.3.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2"
   }
 }
