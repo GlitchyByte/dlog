@@ -1,6 +1,6 @@
 {
   "name": "@glitchybyte/dlog",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "GlitchyByte",
   "license": "Apache-2.0",
   "description": "Console logging for enhancing logs with source filenames and line numbers while removing all logs in production.",
@@ -44,7 +44,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "fs-extra": "^11.3.0",
-    "typescript": "^5.8.2",
+    "typescript": "^5.8.3",
     "vite": "^6.2.2"
   }
 }

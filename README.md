@@ -1,6 +1,6 @@
 # dlog
 
-![version](https://img.shields.io/badge/version-2.0.0-dodgerblue)
+![version](https://img.shields.io/badge/version-2.1.0-dodgerblue)
 
 ## Dev console logger library (with Babel plugin, Vite compatible)
 
