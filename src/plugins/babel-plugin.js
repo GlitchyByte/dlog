@@ -64,12 +64,28 @@ module.exports = function({ types: t }) {
           path.replaceWith(void0Expression)
           return
         }
-        // Add source line argument to the glog call.
+        // Add source line argument to the dlog call.
         const line = path.node.loc?.start?.line
         const sourceLine = state._sourcePath && line ?
           t.stringLiteral(`${state._sourcePath}:${line}`) :
           t.nullLiteral()
-        path.node.arguments.unshift(sourceLine)
+        if (path.node.arguments.length === 0) {
+          // No args. Should not be possible, but let's handle it anyway.
+          path.node.arguments.unshift(sourceLine)
+        } else {
+          // It is possible for this to execute several times,
+          // so we make sure the 1st argument is not what we are about to add.
+          const firstArg = path.node.arguments[0]
+          if (
+            ((sourceLine.type === "NullLiteral") && (firstArg.type !== "NullLiteral")) ||
+            ((sourceLine.type === "StringLiteral") && (
+              (firstArg.type !== "StringLiteral") || ((firstArg.type === "StringLiteral") && (firstArg.value !== sourceLine.value)))
+            )
+          ) {
+            // We are good. Let's add source line.
+            path.node.arguments.unshift(sourceLine)
+          }
+        }
       }
     }
   }
