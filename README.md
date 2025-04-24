@@ -1,6 +1,6 @@
 # dlog
 
-![version](https://img.shields.io/badge/version-2.1.1-dodgerblue)
+[![version](https://img.shields.io/badge/version-2.1.1-dodgerblue)](https://github.com/GlitchyByte/dlog/releases/tag/v2.1.1)
 
 ## Dev console logger library (with Babel plugin, Vite compatible)
 
